@@ -18,69 +18,79 @@ public class EncodeDecode {
     //a-z return its value or anything outside = char itself
 
     private Random random = new Random();
-    private char random(){
-        int randomAscii;
+    private int randomAscii(){
         boolean randomBool= random.nextBoolean();
         if(randomBool){
-           randomAscii= random.nextInt(91-65)+65;
+            return random.nextInt(91-65)+65;
         }else{
-            randomAscii= random.nextInt(58-40)+40;
+            return random.nextInt(58-40)+40;
         }
-        System.out.println(randomAscii);
-        char randomChar= (char)randomAscii;
-        System.out.println(randomChar);
-        return randomChar;
     }
-    char randomChar= 'B';
-    int randomCharAscii= 1;
-    private int getEncodedCharIndex(char aChar){
-        int asciiChar= aChar;
-        int encodedCharIndex = 99;
 
-        if(asciiChar >=65 && asciiChar<=90){
-            encodedCharIndex = asciiChar- randomCharAscii- 65;
+    private int asciiToIndex(int aChar){
+        int index = 99;
 
-        } else if (asciiChar >=40 && asciiChar<=47){
-            encodedCharIndex = asciiChar- randomCharAscii- 4;
+        if(aChar >=65 && aChar<=90){
+            index = aChar- 65;
 
-        } else if (asciiChar >=48 && asciiChar<=57){
-            encodedCharIndex = asciiChar- randomCharAscii- 22;
+        } else if (aChar >=40 && aChar<=47){
+            index = aChar- 4;
+
+        } else if (aChar >=48 && aChar<=57){
+            index = aChar- 22;
         }
-        return encodedCharIndex;
+        return index;
     }
-    private int getEncodedAscii(int encodedCharIndex){
+    private int indexToAscii(int index){
         int encodedCharAscii ;
-        if(encodedCharIndex<0){
-            encodedCharIndex= 44- Math.abs(encodedCharIndex);
+        if(index<0){
+            index= 44- Math.abs(index);
         }
-        if(encodedCharIndex >=0 && encodedCharIndex<=25 ){
-            encodedCharAscii= encodedCharIndex + 65;
-        } else if (encodedCharIndex >=26 && encodedCharIndex<=35 ){
-            encodedCharAscii=encodedCharIndex + 22;
+        if(index >=0 && index<=25 ){
+            encodedCharAscii= index + 65;
+        } else if (index >=26 && index<=35 ){
+            encodedCharAscii=index + 22;
         } else{
-            encodedCharAscii=encodedCharIndex + 4;
+            encodedCharAscii=index + 4;
         }
         return encodedCharAscii;
     }
-    public String encode(String plainText){
-        String encodedText = "";
-        char offset= random();
-        encodedText += offset;
-        for(int i=0; i<plainText.length(); i++){
-            int encodedCharIndex= getEncodedCharIndex(plainText.charAt(i));
-            if(encodedCharIndex== 99){
-                encodedText+= plainText.charAt(i);
 
+    private int encoding(int index, int offset) {
+        int newIndex= index-offset;
+        if(newIndex< 0){
+            newIndex= 44- Math.abs(newIndex);
+        }
+        return indexToAscii(newIndex);
+    }
+
+    public String encode(String plainText){
+        StringBuilder encodedText = new StringBuilder();
+        int offset= randomAscii();
+        encodedText.append((char)offset);
+        int offsetIndex= asciiToIndex(offset);
+
+        for(int i=0; i<plainText.length(); i++){
+            char character= plainText.charAt(i);
+            int charIndex= asciiToIndex(character);
+            if(charIndex== 99){
+                encodedText.append(character);
             } else {
-                int encodedAscii = getEncodedAscii(encodedCharIndex);
+                int encodedAscii = encoding(charIndex, offsetIndex);
                 char encodedChar = (char) encodedAscii;
-                encodedText += encodedChar;
+                encodedText.append(encodedChar);
             }
         }
-        return encodedText;
+        return encodedText.toString();
     }
-//    public String decode(String encodedText){
-//        return "";
-//    }
+    public String decode(String encodedText){
+
+        char charoffset= encodedText.charAt(0);
+        int offset= asciiToIndex(encodedText.charAt(0));
+        System.out.println("char" + charoffset);
+        System.out.println("offset" + offset);
+
+        return "";
+    }
 }
 
