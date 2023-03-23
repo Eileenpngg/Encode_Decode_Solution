@@ -64,6 +64,14 @@ public class EncodeDecode {
         return indexToAscii(newIndex);
     }
 
+    private int decoding(int index,int offset){
+        int newIndex= index+offset;
+        if(newIndex > 43){
+            newIndex= newIndex % 44;
+        }
+        return indexToAscii(newIndex);
+    }
+
     public String encode(String plainText){
         StringBuilder encodedText = new StringBuilder();
         int offset= randomAscii();
@@ -84,13 +92,23 @@ public class EncodeDecode {
         return encodedText.toString();
     }
     public String decode(String encodedText){
+        StringBuilder decodedString = new StringBuilder();
 
-        char charoffset= encodedText.charAt(0);
-        int offset= asciiToIndex(encodedText.charAt(0));
-        System.out.println("char" + charoffset);
-        System.out.println("offset" + offset);
+        char charOffSet= encodedText.charAt(0);
+        int offset= asciiToIndex(charOffSet);
 
-        return "";
+        for(int i=1; i< encodedText.length();i++){
+            char character= encodedText.charAt(i);
+            int encodedCharIndex= asciiToIndex(character);
+            char newchar= character;
+            if (encodedCharIndex!=99){
+                newchar = (char) decoding(encodedCharIndex,offset);
+            }
+            decodedString.append(newchar);
+
+//            System.out.println();
+        }
+        return decodedString.toString();
     }
 }
 
