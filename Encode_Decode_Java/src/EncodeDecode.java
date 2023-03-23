@@ -17,11 +17,20 @@ public class EncodeDecode {
     //A-Z (Index 0-25) (ascii value 65-90) -> difference is 65
     //a-z return its value or anything outside = char itself
 
-
-//    private int random(){
-//
-//
-//    }
+    private Random random = new Random();
+    private char random(){
+        int randomAscii;
+        boolean randomBool= random.nextBoolean();
+        if(randomBool){
+           randomAscii= random.nextInt(91-65)+65;
+        }else{
+            randomAscii= random.nextInt(58-40)+40;
+        }
+        System.out.println(randomAscii);
+        char randomChar= (char)randomAscii;
+        System.out.println(randomChar);
+        return randomChar;
+    }
     char randomChar= 'B';
     int randomCharAscii= 1;
     private int getEncodedCharIndex(char aChar){
@@ -55,7 +64,8 @@ public class EncodeDecode {
     }
     public String encode(String plainText){
         String encodedText = "";
-        encodedText += this.randomChar;
+        char offset= random();
+        encodedText += offset;
         for(int i=0; i<plainText.length(); i++){
             int encodedCharIndex= getEncodedCharIndex(plainText.charAt(i));
             if(encodedCharIndex== 99){
