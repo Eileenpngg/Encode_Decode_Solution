@@ -63,31 +63,71 @@ private int asciiToIndex(int aChar){
 ```
 ## Encoding Psueudocode
 
-### 1. Find the ascii value of each letter and symbols + Find the difference between the index and the ascii
+### 1. Create a method called encoding which converts the plain text index into encoded character ascii using the indexToAscii method
  ```
- private int indexToAscii(int index){
-        int encodedCharAscii ;
-        if(index<0){
-            index= 44- Math.abs(index);
+   private int encoding(int index, int offset) {
+        int newIndex= index-offset;
+        if(newIndex< 0){
+            newIndex= 44- Math.abs(newIndex);
         }
-        if(index >=0 && index<=25 ){
-            encodedCharAscii= index + 65;
-        } else if (index >=26 && index<=35 ){
-            encodedCharAscii=index + 22;
-        } else{
-            encodedCharAscii=index + 4;
-        }
-        return encodedCharAscii;
+        return indexToAscii(newIndex);
     }
 ```
-    //create a variable string called encoded text;
-    //
-    //push random into encoded
-    //loop through the plaintext and check the ascii of the character
-    //ascii of the character - difference between ascii and index - random's index = encoded char
-    //take encoded char and + difference between ascii and index and covert to char, push into encoded
-    //return encoded string
+ ### 2. Create a method encode which encodes a plain text and returns the encoded string
+ ```
+ public String encode(String plainText){
+        StringBuilder encodedText = new StringBuilder();
+        int offset= randomAscii();
+        encodedText.append((char)offset);
+        int offsetIndex= asciiToIndex(offset);
 
+        for(int i=0; i<plainText.length(); i++){
+            char character= plainText.charAt(i);
+            int charIndex= asciiToIndex(character);
+            if(charIndex== 99){
+                encodedText.append(character);
+            } else {
+                int encodedAscii = encoding(charIndex, offsetIndex);
+                char encodedChar = (char) encodedAscii;
+                encodedText.append(encodedChar);
+            }
+        }
+        return encodedText.toString();
+    }
+```
 
-   
+## Decoding Psueudocode
 
+### 1. Create a method called decoding which converts the encoded character index into decoded character ascii using the indexToAscii method
+ ```
+   private int decoding(int index,int offset){
+        int newIndex= index+offset;
+        if(newIndex > 43){
+            newIndex= newIndex % 44;
+        }
+        return indexToAscii(newIndex);
+    }
+```
+
+ ### 2. Create a method decode which decodes a encoded text and returns the plain text as a string
+ ```
+   public String decode(String encodedText){
+        StringBuilder decodedString = new StringBuilder();
+
+        char charOffSet= encodedText.charAt(0);
+        int offset= asciiToIndex(charOffSet);
+
+        for(int i=1; i< encodedText.length();i++){
+            char character= encodedText.charAt(i);
+            int encodedCharIndex= asciiToIndex(character);
+            char newchar= character;
+            if (encodedCharIndex!=99){
+                newchar = (char) decoding(encodedCharIndex,offset);
+            }
+            decodedString.append(newchar);
+        }
+        return decodedString.toString();
+    }
+}
+  
+```
