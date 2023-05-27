@@ -1,6 +1,10 @@
 # Encode_Decode_Solution
 Solution for encoder and decoder in java
 
+## Question 
+
+<img width="580" alt="Screenshot 2023-05-27 at 8 39 39 AM" src="https://github.com/Eileenpngg/Encode_Decode_Solution/assets/77367030/0f85ce76-97ba-4441-ba2c-b3a3e014cf32">
+
 
 ## Psueudocode
 
